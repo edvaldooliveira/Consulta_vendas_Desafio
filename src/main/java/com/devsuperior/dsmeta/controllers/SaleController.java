@@ -22,13 +22,6 @@ public class SaleController {
 		return ResponseEntity.ok(dto);
 	}
 
-	/*
-	@GetMapping(value = "/report")
-	public ResponseEntity<?> getReport() {
-		// TODO
-		return null;
-	}
-	*/
 	@GetMapping(value = "/report")
 	public ResponseEntity<Page<SaleMinDTO>> getReport(
 			@RequestParam(value = "maxDate", required = false) String dateStart,
@@ -45,7 +38,6 @@ public class SaleController {
 	@GetMapping(value = "/summary")
 	public ResponseEntity<?> getSummary() {
 		// TODO
-		//Escrever o codigo aquigit
 		return null;
 	}
 }
