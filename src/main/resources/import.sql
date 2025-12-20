@@ -3,6 +3,17 @@ INSERT INTO tb_seller(name, email, phone) VALUES ('Logan', 'logan@gmail.com', '9
 INSERT INTO tb_seller(name, email, phone) VALUES ('Padme', 'padme@gmail.com', '983433348');
 INSERT INTO tb_seller(name, email, phone) VALUES ('Thor Odinson', 'thor@gmail.com', '997711148');
 INSERT INTO tb_seller(name, email, phone) VALUES ('Anakin', 'any@gmail.com', '844768748');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Carlos Silva', 'carlos.silva@gmail.com', '11980010001');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Ana Pereira', 'ana.pereira@gmail.com', '21980010002');
+INSERT INTO tb_seller(name, email, phone) VALUES ('João Santos', 'joao.santos@gmail.com', '31980010003');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Mariana Costa', 'mariana.costa@gmail.com', '41980010004');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Rafael Almeida', 'rafael.almeida@gmail.com', '51980010005');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Beatriz Rocha', 'beatriz.rocha@gmail.com', '61980010006');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Lucas Fernandes', 'lucas.fernandes@gmail.com', '71980010007');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Juliana Martins', 'juliana.martins@gmail.com', '81980010008');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Pedro Nogueira', 'pedro.nogueira@gmail.com', '91980010009');
+INSERT INTO tb_seller(name, email, phone) VALUES ('Fernanda Lima', 'fernanda.lima@gmail.com', '11980010010');
+
 
 INSERT INTO tb_sales(seller_id,visited,deals,amount,date) VALUES (1,121,67,18196.0,'2025-06-16');
 INSERT INTO tb_sales(seller_id,visited,deals,amount,date) VALUES (2,26,14,4255.0,'2025-06-14');
