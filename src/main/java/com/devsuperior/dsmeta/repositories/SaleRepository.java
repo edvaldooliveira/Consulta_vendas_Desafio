@@ -15,11 +15,19 @@ import java.util.List;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    @Query("SELECT new com.devsuperior.dsmeta.dto.SaleMinDTO(s.id, s.date, s.amount, s.seller.name) "
-            + "FROM Sale s "
-            + "WHERE s.date BETWEEN :startDate AND :endDate "
-            + "AND LOWER(s.seller.name) LIKE LOWER(CONCAT('%', :name, '%')) "
-            + "ORDER BY s.date DESC")
+    @Query("""
+        SELECT new com.devsuperior.dsmeta.dto.SaleMinDTO(
+            s.id,
+            s.date,
+            s.amount,
+            s.seller.name
+        )
+        FROM Sale s
+        WHERE s.date >= :startDate
+          AND s.date <  :endDate
+          AND LOWER(s.seller.name) LIKE LOWER(CONCAT('%', :name, '%'))
+        ORDER BY s.date DESC
+    """)
     Page<SaleMinDTO> searchByDateAndSeller(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
@@ -27,15 +35,20 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             Pageable pageable
     );
 
-    @Query("SELECT new com.devsuperior.dsmeta.dto.SaleSummaryDTO(s.seller.name, SUM(s.amount)) "
-            + "FROM Sale s "
-            + "WHERE s.date BETWEEN :minDate AND :maxDate "
-            + "GROUP BY s.seller.name "
-            + "ORDER BY SUM(s.amount) DESC")
+    @Query("""
+        SELECT new com.devsuperior.dsmeta.dto.SaleSummaryDTO(
+            s.seller.name,
+            SUM(s.amount)
+        )
+        FROM Sale s
+        WHERE s.date >= :minDate
+          AND s.date <  :maxDate
+        GROUP BY s.seller.name
+        ORDER BY SUM(s.amount) DESC
+    """)
     List<SaleSummaryDTO> getSalesSummary(
             @Param("minDate") LocalDate minDate,
             @Param("maxDate") LocalDate maxDate
     );
-
-
 }
+

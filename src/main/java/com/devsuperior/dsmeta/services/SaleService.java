@@ -16,16 +16,16 @@ import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
+
 @Service
 public class SaleService {
-
 
 	@Autowired
 	private SaleRepository repository;
 
 	public SaleMinDTO findById(Long id) {
 		Optional<Sale> result = repository.findById(id);
-		Sale entity = result.get();
+		Sale entity = result.orElseThrow(() -> new RuntimeException("Sale not found"));
 		return new SaleMinDTO(entity);
 	}
 
@@ -34,31 +34,50 @@ public class SaleService {
 		return result.map(SaleMinDTO::new);
 	}
 
+	public Page<SaleMinDTO> searchDateSeller(
+			String dateStartStr,
+			String dateEndStr,
+			String name,
+			Pageable pageable
+	) {
 
-	public Page<SaleMinDTO> searchDateSeller(String dateStartStr, String dateEndStr, String name, Pageable pageable) {
-		LocalDate dateEnd = (dateEndStr == null || dateEndStr.isBlank()) ?
-				LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()) :
-				LocalDate.parse(dateEndStr);
+		LocalDate dateEnd = (dateEndStr == null || dateEndStr.isBlank())
+				? LocalDate.now()
+				: LocalDate.parse(dateEndStr);
 
-		LocalDate dateStart = (dateStartStr == null || dateStartStr.isBlank()) ?
-				dateEnd.minusYears(1L) :
-				LocalDate.parse(dateStartStr);
+		LocalDate dateStart = (dateStartStr == null || dateStartStr.isBlank())
+				? dateEnd.minusYears(1)
+				: LocalDate.parse(dateStartStr);
+
+		// 🔥 MUITO IMPORTANTE: incluir o último dia
+		dateEnd = dateEnd.plusDays(1);
 
 		String nameFilter = (name == null) ? "" : name;
 
-		return repository.searchByDateAndSeller(dateStart, dateEnd, nameFilter, pageable);
+		return repository.searchByDateAndSeller(
+				dateStart,
+				dateEnd,
+				nameFilter,
+				pageable
+		);
 	}
 
-	public List<SaleSummaryDTO> getSalesSummary(String minDateStr, String maxDateStr) {
-		LocalDate maxDate = (maxDateStr == null || maxDateStr.isBlank()) ?
-				LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()) :
-				LocalDate.parse(maxDateStr);
+	public List<SaleSummaryDTO> getSalesSummary(
+			String minDateStr,
+			String maxDateStr
+	) {
 
-		LocalDate minDate = (minDateStr == null || minDateStr.isBlank()) ?
-				maxDate.minusYears(1L) :
-				LocalDate.parse(minDateStr);
+		LocalDate maxDate = (maxDateStr == null || maxDateStr.isBlank())
+				? LocalDate.now()
+				: LocalDate.parse(maxDateStr);
+
+		LocalDate minDate = (minDateStr == null || minDateStr.isBlank())
+				? maxDate.minusYears(1)
+				: LocalDate.parse(minDateStr);
+
+		// 🔥 MUITO IMPORTANTE: incluir o último dia
+		maxDate = maxDate.plusDays(1);
 
 		return repository.getSalesSummary(minDate, maxDate);
 	}
-
 }
